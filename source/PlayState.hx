@@ -201,7 +201,7 @@ class PlayState extends FlxState
 		}
 		else if (key_linked)
 		{
-			if (player.overlaps(door))
+			if (player.overlaps(door) || FlxG.keys.justReleased.F5)
 			{
 				if (level.nextLevelPath != null)
 				{
