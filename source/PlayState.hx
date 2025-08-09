@@ -155,6 +155,18 @@ class PlayState extends FlxState
 	{
 		super.update(elapsed);
 
+		#if (debug && sys)
+		var sysPath = Sys.programPath().substring(0, Sys.programPath().indexOf('\\export')).replace('\\', '/');
+		sysPath += '/assets/$leveljsonPath.json';
+		var levelFile:LevelData = Json.parse(File.getContent(sysPath));
+
+		if (level.code != levelFile.code)
+		{
+			trace('Auto-reload');
+			FlxG.switchState(() -> new PlayState()); // auto-reload!
+		}
+		#end
+
 		inputlisttext.text = '';
 		inputCode = '';
 		for (input in inputList)
