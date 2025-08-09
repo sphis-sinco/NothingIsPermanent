@@ -1,7 +1,7 @@
 {
-        "code": "l.4-d.2-u.0-r.0",
+        "code": "u.9-r.3",
         "nextLevelPath": "stages/stage2",
-        "playerPosition": [4,4],
-        "keyPosition": [6,4],
-        "doorPosition": [6,8]
+        "playerPosition": [3, 2],
+        "keyPosition": [5, 5],
+        "doorPosition": [9, 0]
 }

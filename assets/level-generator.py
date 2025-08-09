@@ -3,7 +3,7 @@ import random
 
 # Grid size in tiles
 GRID_WIDTH = 10
-GRID_HEIGHT = 7
+GRID_HEIGHT = 8
 
 # Possible movement directions
 DIRECTIONS = ["l", "r", "u", "d"]
@@ -45,7 +45,4 @@ def generate_level():
     }
 
 if __name__ == "__main__":
-    level_data = generate_level()
-    with open("level.json", "w") as f:
-        json.dump(level_data, f, indent=4)
-    print("Generated level.json")
+    print(generate_level())
