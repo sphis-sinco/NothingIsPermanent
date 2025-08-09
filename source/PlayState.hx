@@ -9,6 +9,13 @@ import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import haxe.Json;
 import lime.utils.Assets;
+import sys.FileSystem;
+
+using StringTools;
+
+#if sys
+import sys.io.File;
+#end
 
 class PlayState extends FlxState
 {
@@ -32,9 +39,21 @@ class PlayState extends FlxState
 
 	override public function create()
 	{
-		level = Json.parse(Assets.getText('assets/$leveljsonPath.json'));
+		var path = 'assets/$leveljsonPath.json';
 
-		if (level == null)
+		#if (debug && sys)
+		var sysPath = Sys.programPath().substring(0, Sys.programPath().indexOf('\\export')).replace('\\', '/');
+		sysPath += '/$path';
+		trace(sysPath);
+		if (FileSystem.exists(sysPath))
+			level = Json.parse(File.getContent(sysPath));
+		else
+			FlxG.switchState(() -> new EndState());
+		#else
+		level = Json.parse(Assets.getText(path));
+		#end
+
+		if (level != null)
 			inputCode = level.code;
 
 		if (inputCode == null || inputCode == '')
@@ -201,7 +220,7 @@ class PlayState extends FlxState
 		}
 		else if (key_linked)
 		{
-			if (player.overlaps(door) || FlxG.keys.justReleased.F5)
+			if (player.overlaps(door))
 			{
 				if (level.nextLevelPath != null)
 				{
@@ -228,6 +247,30 @@ class PlayState extends FlxState
 				case 'd':
 					key.y -= player.height;
 			}
+		}
+
+		if (FlxG.keys.justReleased.F4)
+		{
+			PlayState.leveljsonPath = 'tutorial';
+			FlxG.switchState(() -> new PlayState());
+		}
+
+		if (FlxG.keys.justReleased.F5)
+		{
+			if (level.nextLevelPath != null)
+			{
+				PlayState.leveljsonPath = level.nextLevelPath;
+				FlxG.switchState(() -> new PlayState());
+			}
+			else
+			{
+				FlxG.switchState(() -> new EndState());
+			}
+		}
+
+		if (FlxG.keys.justReleased.R)
+		{
+			FlxG.switchState(() -> new PlayState());
 		}
 	}
 
